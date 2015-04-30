@@ -1,18 +1,13 @@
-version=0.1
+report.pdf: report.tex 
+	pdflatex report
 
-pyproject_$(version).tgz:       function.tmp Data.tmp
-        tar czf pyproject_$(version).tgz project
-        @echo "BUILD COMPLETED"
 
-functions.tmp:      ScalableKMeansPlusPlus/InitialCode.py
-        python ScalableKMeansPlusPlus/InitialCode.py
-        @touch functions.tmp
+report.tex: report.ipynb
+	@ipython nbconvert --to latex report.ipynb
 
-third.tmp:      ScalableKMeansPlusPlus/DataSimulation.py
-        python ScalableKMeansPlusPlus/DataSimulation.py
-        @touch Data.tmp
+.PHONY: all clean
+
+all: report.pdf
 
 clean:
-        @rm -f *.tmp
-        @rm -f *.tgz
-        @echo "cleaned up"
+	rm -f *csv *png *aux *log *png table.tex *pytxcode *pdf
